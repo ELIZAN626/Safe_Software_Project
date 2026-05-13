@@ -2,13 +2,44 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const WebSocket = require("ws");
+// const http = require("http");
+// NUEVO
 const http = require("http");
+const https = require("https");
+const fs = require("fs");
+// NUEVO
 const os = require("os");
 
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
+// //crear app
+// const app = express();
+// NUEVO DAST
+const helmet = require('helmet');
+
 //crear app
 const app = express();
+
+app.use(helmet({
+    contentSecurityPolicy: {
+        useDefaults: true,
+        directives: {
+            "default-src": ["'none'"],
+            "frame-ancestors": ["'none'"],
+            "form-action": ["'self'"],
+            "script-src": ["'self'", "'unsafe-inline'"],
+            "style-src": ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+            "img-src": ["'self'", "data:"],
+            "connect-src": ["'self'", "https://api.stripe.com"]
+        }
+    },
+    frameguard: {
+        action: 'deny'
+    },
+    hidePoweredBy: true,
+    noSniff: true
+}));
+// NUEVO DAST
 
 // Servir archivos estáticos del FRONTEND
 app.use('/views', express.static(path.join(__dirname, '../FRONTEND/views')));
@@ -31,7 +62,12 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
+// NUEVO DAST
+app.use(cors({
+    origin: ['http://localhost:4200', 'http://localhost:3000', 'https://localhost:3000']
+}));
+// NUEVO DAST
 
 // Conectar Auth
 app.use('/api/auth', authRoutes);
@@ -105,7 +141,7 @@ if (process.env.STRIPE_SECRET_KEY) {
             const user = await User.findById(userId);
             if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
 
-            
+
 
             const alreadyHasAll = user.fondos && user.fondos.includes('all');
             const alreadyHasProduct = user.fondos && user.fondos.includes(productKey);
@@ -162,6 +198,13 @@ app.get('/', (req, res) => {
 
 //servidor Ws para el juego
 
-const server = http.createServer(app);
-
-require('./serverExt')(app,server, WebSocket, os, PORT);
+// const server = http.createServer(app);
+// require('./serverExt')(app,server, WebSocket, os, PORT);
+// NUEVO
+const options = {
+    key: fs.readFileSync(path.join(__dirname, 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'cert.pem'))
+};
+const server = https.createServer(options, app);
+require('./serverExt')(app, server, WebSocket, os, PORT);
+// NUEVO
