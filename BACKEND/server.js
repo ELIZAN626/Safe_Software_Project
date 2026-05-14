@@ -10,30 +10,38 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 // //crear app
 // const app = express();
 // NUEVO DAST
-const helmet = require('helmet');
+// const helmet = require('helmet');
 
 //crear app
 const app = express();
 
-app.use(helmet({
-    contentSecurityPolicy: {
-        useDefaults: true,
-        directives: {
-            "default-src": ["'none'"],
-            "frame-ancestors": ["'none'"],
-            "form-action": ["'self'"],
-            "script-src": ["'self'", "'unsafe-inline'"],
-            "style-src": ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
-            "img-src": ["'self'", "data:"],
-            "connect-src": ["'self'", "https://api.stripe.com"]
-        }
-    },
-    frameguard: {
-        action: 'deny'
-    },
-    hidePoweredBy: true,
-    noSniff: true
-}));
+app.use((req, res, next) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.removeHeader('Content-Security-Policy');
+    next();
+});
+
+// app.use(helmet({
+//     contentSecurityPolicy: {
+//         useDefaults: true,
+//         directives: {
+//             "default-src": ["'none'"],
+//             "frame-ancestors": ["'none'"],
+//             "form-action": ["'self'"],
+//             "script-src": ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://js.stripe.com"],
+//             "frame-src": ["'self'", "https://js.stripe.com", "https://hooks.stripe.com"],
+//             "script-src-attr": ["'unsafe-inline'"],
+//             "style-src": ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+//             "img-src": ["'self'", "data:"],
+//             "connect-src": ["'self'", "https://api.stripe.com", "ws:", "wss:"]
+//         }
+//     },
+//     frameguard: {
+//         action: 'deny'
+//     },
+//     hidePoweredBy: true,
+//     noSniff: true
+// }));
 // NUEVO DAST
 
 // Servir archivos estáticos del FRONTEND
