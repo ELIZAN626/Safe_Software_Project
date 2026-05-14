@@ -1,6 +1,5 @@
 
-
-# SCA (Software Composition Analysis)
+# Reporte — SCA (Software Composition Analysis)
 
 ## Objetivo
 
@@ -22,36 +21,105 @@ Esta herramienta permite analizar automáticamente las dependencias instaladas e
 
 ## Procedimiento
 
-1. Abrir una terminal dentro del proyecto.
-2. Ejecutar el siguiente comando:
+1. Se abrió una terminal dentro de la carpeta raíz del proyecto.
+2. Se ejecutó el siguiente comando:
 
-```bash id="c7rk4d"
+```bash id="g0vl5n"
 npm audit
 ```
 
-3. Esperar a que la herramienta analice las dependencias instaladas.
-4. Revisar el reporte generado.
+3. La herramienta realizó el análisis de todas las dependencias instaladas en el proyecto.
+4. Se revisó el reporte generado automáticamente por npm.
 
 ---
 
 ## Resultados obtenidos
 
-La herramienta identificó 0 vulnerabilidades
+El análisis SCA realizado con `npm audit` no detectó vulnerabilidades en las dependencias utilizadas por el proyecto.
+
+Resultado obtenido:
+
+```text id="vbyv47"
+found 0 vulnerabilities
+```
+
+La herramienta verificó correctamente las librerías instaladas y no encontró paquetes con vulnerabilidades conocidas reportadas al momento de ejecutar el análisis.
 
 ---
 
 ## Interpretación de resultados
 
-Las vulnerabilidades detectadas indican que, al menos en el aspecto de la estructura del código del proyecto, nos encontramos en buen camino.
+Los resultados indican que las dependencias utilizadas actualmente por la aplicación no presentan vulnerabilidades conocidas registradas dentro de la base de datos de seguridad de npm.
+
+Esto reduce el riesgo asociado a ataques de cadena de suministro (Supply Chain Attacks), vulnerabilidades transitivas y explotación de librerías inseguras, temas abordados durante el curso. 
+
+Sin embargo, debido a que continuamente aparecen nuevas vulnerabilidades en paquetes de terceros, es importante mantener monitoreo constante sobre las dependencias del proyecto.
 
 ---
 
 ## Recomendaciones
 
-* Seguir así.
+* Continuar realizando análisis periódicos de dependencias.
+* Mantener las librerías actualizadas.
+* Integrar análisis SCA automatizado dentro del pipeline CI/CD.
+* Revisar regularmente nuevas vulnerabilidades publicadas para paquetes utilizados en el proyecto.
+* Evitar instalar dependencias innecesarias o sin mantenimiento.
 
 ---
 
+## Conclusión
+
+La prueba SCA permitió validar que las dependencias actuales del proyecto no presentan vulnerabilidades conocidas al momento del análisis. Esto contribuye a mejorar la seguridad del software y reducir riesgos relacionados con componentes de terceros y ataques a la cadena de suministro.
+
+
+```sh
+npm audit
+```
+
+3. La herramienta realizó el análisis de todas las dependencias instaladas en el proyecto.
+4. Se revisó el reporte generado automáticamente por npm.
+
+---
+
+## Resultados obtenidos
+
+El análisis SCA realizado con `npm audit` no detectó vulnerabilidades en las dependencias utilizadas por el proyecto.
+
+Resultado obtenido:
+
+```text
+found 0 vulnerabilities
+```
+
+La herramienta verificó correctamente las librerías instaladas y no encontró paquetes con vulnerabilidades conocidas reportadas al momento de ejecutar el análisis.
+
+---
+
+## Interpretación de resultados
+
+Los resultados indican que las dependencias utilizadas actualmente por la aplicación no presentan vulnerabilidades conocidas registradas dentro de la base de datos de seguridad de npm.
+
+Esto reduce el riesgo asociado a ataques de cadena de suministro (Supply Chain Attacks), vulnerabilidades transitivas y explotación de librerías inseguras, temas abordados durante el curso. 
+
+Sin embargo, debido a que continuamente aparecen nuevas vulnerabilidades en paquetes de terceros, es importante mantener monitoreo constante sobre las dependencias del proyecto.
+
+---
+
+## Recomendaciones
+
+* Continuar realizando análisis periódicos de dependencias.
+* Mantener las librerías actualizadas.
+* Integrar análisis SCA automatizado dentro del pipeline CI/CD.
+* Revisar regularmente nuevas vulnerabilidades publicadas para paquetes utilizados en el proyecto.
+* Evitar instalar dependencias innecesarias o sin mantenimiento.
+
+---
+
+## Conclusión
+
+La prueba SCA permitió validar que las dependencias actuales del proyecto no presentan vulnerabilidades conocidas al momento del análisis. Esto contribuye a mejorar la seguridad del software y reducir riesgos relacionados con componentes de terceros y ataques a la cadena de suministro.
+
+ 
 # Reporte — Secret Scanning
 
 ## Objetivo
@@ -84,7 +152,7 @@ Gitleaks permite detectar secretos expuestos tanto en archivos actuales del proy
 1. Se abrió una terminal dentro de la carpeta raíz del proyecto.
 2. Se ejecutó el análisis utilizando Docker y Gitleaks con el siguiente comando:
 
-```bash id="lf93tg"
+```sh
 docker run --rm -v $(pwd):/path zricethezav/gitleaks detect --source="/path" -v
 ```
 
@@ -113,7 +181,7 @@ La herramienta identificó una llave privada almacenada directamente dentro del 
 
 Fragmento del resultado obtenido:
 
-```text id="o5u5ij"
+```text
 Finding: -----BEGIN PRIVATE KEY-----
 RuleID: private-key
 File: BACKEND/key.pem
@@ -151,7 +219,7 @@ Este tipo de hallazgo se relaciona directamente con los riesgos de exposición d
 
 Ejemplo de configuración recomendada para `.gitignore`:
 
-```gitignore id="dhn5my"
+```gitignore
 *.pem
 *.key
 .env
@@ -162,3 +230,5 @@ Ejemplo de configuración recomendada para `.gitignore`:
 ## Conclusión
 
 La prueba de Secret Scanning permitió detectar exitosamente información sensible expuesta dentro del repositorio del proyecto. El hallazgo demuestra la importancia de integrar controles automáticos de seguridad dentro del ciclo de desarrollo seguro (DevSecOps), especialmente para prevenir la exposición accidental de credenciales y secretos en repositorios de código.
+
+
