@@ -2,12 +2,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const WebSocket = require("ws");
-// const http = require("http");
-// NUEVO
 const http = require("http");
-const https = require("https");
-const fs = require("fs");
-// NUEVO
 const os = require("os");
 
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
@@ -198,13 +193,5 @@ app.get('/', (req, res) => {
 
 //servidor Ws para el juego
 
-// const server = http.createServer(app);
-// require('./serverExt')(app,server, WebSocket, os, PORT);
-// NUEVO
-const options = {
-    key: fs.readFileSync(path.join(__dirname, 'key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'cert.pem'))
-};
-const server = https.createServer(options, app);
+const server = http.createServer(app);
 require('./serverExt')(app, server, WebSocket, os, PORT);
-// NUEVO
