@@ -45,7 +45,7 @@ const crypto = require('crypto');
 //     }
 // 
 // }, { timestamps: true });
-// NUEVO
+// NUEVO SAST
 // schema tarjeta
 const cardSchema = new mongoose.Schema({
     cardholderName: { type: String, required: true, trim: true, match: /^[a-zA-Z\s]+$/ },
@@ -91,7 +91,7 @@ const userSchema = new mongoose.Schema({
     }
 
 }, { timestamps: true, strict: true });
-// NUEVO
+// NUEVO SAST
 
 // encriptación contraseña
 userSchema.pre("save", async function () {
@@ -101,7 +101,7 @@ userSchema.pre("save", async function () {
 });
 
 // validar contraseña
-userSchema.methods.matchPassword = async function(enteredPassword) {
+userSchema.methsods.matchPassword = async function(enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
@@ -121,7 +121,7 @@ userSchema.methods.matchPassword = async function(enteredPassword) {
 //         encryptedCard: encrypted
 //     });
 // };
-// NUEVO
+// NUEVO SAST
 // agregar tarjeta
 userSchema.methods.addCreditCard = function(cardNumber, cardholderName, expMonth, expYear) {
     // Si process.env.CIPHER_KEY no está definido usamos una de fallback de 32 bytes para dev
@@ -154,6 +154,6 @@ userSchema.methods.addCreditCard = function(cardNumber, cardholderName, expMonth
         encryptedCard: finalEncrypted
     });
 };
-// NUEVO
+// NUEVO SAST
 
 module.exports = mongoose.model('User', userSchema);

@@ -16,7 +16,7 @@ const mongoose = require('mongoose');
 // }, { 
 //     collection: "Cock's" // Tu colección específica
 // });
-// NUEVO
+// NUEVO SAST
 const galloSchema = new mongoose.Schema({
     nombre: { type: String, required: true, trim: true, match: /^[a-zA-Z0-9\s]+$/ },
     vida: { type: Number, required: true, min: 0 },
@@ -31,7 +31,7 @@ const galloSchema = new mongoose.Schema({
     collection: "Cock's", // Tu colección específica
     strict: true
 });
-// NUEVO
+// NUEVO SAST
 
 // Exportamos el MODELO para poder usar "Gallo.find()" en otros archivos
 module.exports = mongoose.model('Gallo', galloSchema);
