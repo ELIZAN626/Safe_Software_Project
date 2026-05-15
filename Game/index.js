@@ -263,11 +263,15 @@ function gameLoop() {
     console.log("Game Started");
     animationMove(player2, 945, 1,400);
     animationMove(player1, -325, 1,-400);
-    backgroundImage.src = localStorage.selectedFondoRoute;
+    let fondo = localStorage.getItem("selectedFondoRoute") || localStorage.selectedFondoRoute;
+    if (fondo && fondo !== "null" && fondo !== "undefined" && fondo !== "default") {
+        backgroundImage.src = fondo;
+    } else {
+        backgroundImage.src = "";
+    }
     console.log(backgroundImage.src);
   }
   if(!backgroundImage.src || backgroundImage.naturalWidth === 0){
-    backgroundImage.src = "";
     c.fillStyle = "lightgray";
     c.fillRect(0,0,canvas.width, canvas.height);
     c2.fillStyle = "lightgray";
@@ -362,7 +366,7 @@ function crearPlayer1(cocksData,background){
   },
   cocks,
   1,
-  "/Assets/FONDO_bosque.jpg");
+  background || "");
 }
 
 function crearPlayer2(cocksData,background){
@@ -389,7 +393,7 @@ function crearPlayer2(cocksData,background){
   },
   cocks,
   2,
-  "/Assets/FONDO_bosque.jpg");
+  background || "");
 }
 
 function sendEndInfo(empate,ganador,perdedor){
